@@ -1,0 +1,9 @@
+{
+  "uuid": "%uuid%",
+  "name": "JumpingAddon",
+  "mainClass": "de.jumpingpxl.jumpingaddon.JumpingAddon",
+  "author": "JumpingPxl",
+  "description": "A all in one LabyMod add-on by JumpingPxl",
+  "version": 1,
+  "category": 2
+}

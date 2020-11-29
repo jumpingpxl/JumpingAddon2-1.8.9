@@ -1,0 +1,72 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+    }
+}
+
+plugins {
+    id 'net.ltgt.apt' version '0.10'
+    id "com.github.johnrengelman.shadow" version "4.0.4"
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    shadow group: 'com.google.inject', name: 'guice', version: '4.2.3'
+}
+
+version = "0.2.0 SNAPSHOT"
+group = "com.yourname.modid"
+archivesBaseName = "modid"
+
+minecraft {
+    version = "1.8.9-11.15.1.1855"
+    runDir = "run"
+    mappings = "stable_20"
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+reobf {
+    jar {
+        useNotchSrg()
+    }
+}
+
+configurations {
+    shadow
+    implementation.extendsFrom shadow
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileJava.options.encoding = 'UTF-8'
